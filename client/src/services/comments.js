@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const baseURL = "http://localhost:3000/comment";
+const baseURL = "https://nameless-lake-81661.herokuapp.com/comment";
 
 const service = axios.create({
   baseURL,

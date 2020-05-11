@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const baseURL = "http://localhost:3000/song";
+const baseURL = "https://nameless-lake-81661.herokuapp.com/song";
 
 const service = axios.create({
   baseURL,
