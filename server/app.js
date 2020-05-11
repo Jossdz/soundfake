@@ -37,7 +37,7 @@ app.use(
 app.use(
   cors({
     credentials: true,
-    origin: ["http://localhost:4200", "https://project-rust.now.sh"],
+    origin: ["http://localhost:4200", "https://soundfake.now.sh"],
   })
 );
 app.use(flash());
