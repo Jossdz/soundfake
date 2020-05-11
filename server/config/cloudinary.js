@@ -11,7 +11,6 @@ cloudinary.config({
 const storage = cloudinaryStorage({
   cloudinary: cloudinary,
   folder: "soundfake",
-  allowedFormats: ["mp3"],
   filename: (req, file, cb) => {
     cb(null, file.originalname);
   },

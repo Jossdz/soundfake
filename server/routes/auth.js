@@ -14,41 +14,26 @@ router.post(
     passReqToCallback: true,
   }),
   (req, res) => {
-    res.status(200).json({ user: req.user });
+    const { _id, email } = req.user;
+    res.status(200).json({ user: { _id, email } });
   }
 );
 
-router.post("/signup", (req, res, next) => {
-  const username = req.body.username;
-  const password = req.body.password;
-  if (username === "" || password === "") {
-    res.json({ message: "Indicate username and password" });
-    return;
-  }
+router.post("/signup", async (req, res, next) => {
+  const { email, password } = req.body;
+  const user = await User.findOne({ email });
 
-  User.findOne({ username }, "username", (err, user) => {
-    if (user !== null) {
-      res.json({ message: "The username already exists" });
-      return;
-    }
+  if (user) return res.json({ msg: "User already exist" });
 
-    const salt = bcrypt.genSaltSync(bcryptSalt);
-    const hashPass = bcrypt.hashSync(password, salt);
+  const salt = bcrypt.genSaltSync(bcryptSalt);
+  const hashPass = bcrypt.hashSync(password, salt);
 
-    const newUser = new User({
-      username,
-      password: hashPass,
-    });
-
-    newUser
-      .save()
-      .then(({ user: { username, _id } }) => {
-        res.status("201").json({ username, _id });
-      })
-      .catch((err) => {
-        res.json({ message: "Something went wrong" });
-      });
+  const { _id, email: userEmail } = await User.create({
+    email,
+    password: hashPass,
   });
+
+  res.status(201).json({ msg: "User created", user: { _id, userEmail } });
 });
 
 router.get("/logout", (req, res) => {
